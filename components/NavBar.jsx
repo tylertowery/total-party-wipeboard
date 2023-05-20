@@ -12,9 +12,9 @@ export default function NavBar() {
   return (
     <div className='nav-bar'>
       <h4 onClick={() => { router.push("/") }} > Total Party Wipeboard</h4 >
-      <h4 onClick={() => { router.push("/parties") }}>Parties</h4>
+      <h4 onClick={() => { router.push("/party-list") }}>Parties</h4>
       <h4 onClick={() => { router.push("/monsters") }}>Monsters</h4>
-      {session ? <h4 onClick={() => signOut()}>Logout</h4> : <h4 onClick={() => { router.push("/api/auth/signin") }}>Sign In</h4>}
+      {session ? <h4 onClick={() => signOut()}>Logout</h4> : <h4 onClick={() => { router.push("/signin") }}>Sign In</h4>}
     </div>
   )
 }
