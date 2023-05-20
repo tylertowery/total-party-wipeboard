@@ -12,6 +12,7 @@ export default function Signin() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('signing in');
+    console.log('email: ', emailRef);
   }
 
   const handleChange = (event) => {
