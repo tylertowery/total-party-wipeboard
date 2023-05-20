@@ -2,12 +2,10 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-export default function Signin() {
+export default function Signin({ router }) {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-
-  const router = useRouter();
 
   const handleSubmit = (event) => {
     event.preventDefault();
