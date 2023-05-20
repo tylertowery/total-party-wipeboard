@@ -16,6 +16,7 @@ export default function Signin({ router }) {
   const handleChange = (event) => {
     event.preventDefault();
     router.push('/signup');
+    console.log('hello');
   }
 
   return (
