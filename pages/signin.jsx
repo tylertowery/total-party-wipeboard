@@ -10,7 +10,7 @@ export default function Signin({ router }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('signing in');
-    console.log('email: ', emailRef);
+    console.log('email: ', emailRef.current.value);
   }
 
   const handleChange = (event) => {
