@@ -1,16 +1,26 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { auth } from '../lib/firebase_setup/config.js';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Signin({ router }) {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('signing in');
-    console.log('email: ', emailRef.current.value);
+    console.log(auth);
+
+    signInWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
+      .then((userCredential) => {
+        console.log(userCredential);
+        router.push('/');
+      })
+      .catch((error) => {
+        alert(error.message);
+      })
   }
 
   const handleChange = (event) => {
@@ -22,8 +32,10 @@ export default function Signin({ router }) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type='email' ref={emailRef} required></input>
+        <label htmlFor="email">
+          Email
+          <input type='email' ref={emailRef} required></input>
+        </label>
         <label htmlFor="password">Password</label>
         <input type='password' ref={passwordRef} required></input>
         <button type="submit">Sign In</button>

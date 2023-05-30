@@ -1,10 +1,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Party from '../components/party';
 
-export default function Parties() {
-  const router = useRouter();
+export default function Parties({ router }) {
   // placeholder parties state
   const [parties, setParties] = useState([{ campaignPic: 'url', campgainName: 'campaign', members: [1, 2, 3] }, { members: [4] }]);
 
@@ -19,6 +17,9 @@ export default function Parties() {
         {parties.map((party) => {
           return <Party key={party} party={party} />
         })}
+      </div>
+      <div>
+        <p onClick={() => { router.push('/create-party') }}>Create a new party</p>
       </div>
     </>
   )

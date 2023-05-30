@@ -12,11 +12,11 @@ export default function Party({ party }) {
         <p>Date Created</p>
         <p>Date Last Played</p>
       </div>
-      <div>
+      {/* <div>
         {party.members.map((member) => {
           return <Member member={member} />
         })}
-      </div>
+      </div> */}
     </>
   )
 }
