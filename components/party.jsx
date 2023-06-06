@@ -1,22 +1,21 @@
-import Member from './member';
+import MemberCards from './member-cards';
 
 export default function Party({ party }) {
   return (
-    <>
+    <div className='party'>
       <div className="campaign-info">
         <img></img>
-        <p>Campaign Name</p>
+        <p>{party.campaignName}</p>
       </div>
-      <div className="party-info">
-        <p>Party Name</p>
-        <p>Date Created</p>
-        <p>Date Last Played</p>
+      <div className='party-info'>
+        <p>{party.partyName}</p>
+        <p>{party.createdAt}</p>
       </div>
-      {/* <div>
+      <div className='members'>
         {party.members.map((member) => {
-          return <Member member={member} />
+          return <MemberCards key={member.characterName} member={member} />
         })}
-      </div> */}
-    </>
+      </div>
+    </div>
   )
 }

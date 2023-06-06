@@ -25,10 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/create-party": [
+    "/parties": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/create-party.js"
+      "static/chunks/pages/parties.js"
     ]
   },
   "ampFirstPages": []

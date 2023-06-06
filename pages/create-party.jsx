@@ -4,7 +4,7 @@ import { db } from '../lib/firebase_setup/config';
 import { writeBatch, doc, collection, addDoc } from 'firebase/firestore'
 import { useAuthContext } from '../lib/context/AuthContext';
 
-export default function CreateParty() {
+export default function CreateParty({ router }) {
   const [members, setMembers] = useState([]);
   const campaignNameRef = useRef();
   const partyNameRef = useRef();
@@ -36,6 +36,8 @@ export default function CreateParty() {
     event.preventDefault();
     console.log('submitting party');
     const memberBatch = writeBatch(db);
+    const currentDate = new Date().toLocaleDateString('en-US');
+
 
     members.forEach((member, index) => {
       const { playerName, characterName, characterClass } = member;
@@ -60,7 +62,14 @@ export default function CreateParty() {
       campaignName: campaignNameRef.current.value,
       partyName: partyNameRef.current.value,
       dungeonMaster: user.email,
-      members: members.map((member) => member.characterName)
+      createdAt: currentDate,
+      members: members.map((member) => {
+        return {
+          playerName: member.playerName,
+          characterName: member.characterName,
+          characterClass: member.characterClass
+        }
+      })
     }
 
     try {
@@ -70,6 +79,7 @@ export default function CreateParty() {
       setMembers([]);
       campaignNameRef.current.value = '';
       partyNameRef.current.value = '';
+      router.push('/parties');
     } catch (error) {
       console.error('Error saving form to Firebase:', error);
     }
@@ -86,7 +96,7 @@ export default function CreateParty() {
         {members.map((member, index) => {
           return <Member key={index} index={index} member={member} onInputChange={handleInputChange} />
         })}
-        <button onClick={handleAddMember} type='button'>Add a member</button>
+        <button onClick={handleAddMember} type='button'>Add another member</button>
         <button type='submit'>Create Party</button>
       </form>
     </>

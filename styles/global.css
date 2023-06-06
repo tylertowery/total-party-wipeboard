@@ -87,3 +87,27 @@ h6 {
   padding: 1em 5em;
   width: 100vw;
 }
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+
+/********** Party Cards **********/
+.party {
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+  margin: 5% 15%;
+}
+
+.members {
+  display: flex;
+  flex-direction: row;
+}
+
+.member-card {
+  padding: 1rem;
+}
