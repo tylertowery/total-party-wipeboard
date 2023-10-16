@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function Monsters() {
   return (
-    <div>
-      Where my monsters at?
+    <div className='page'>
+      <h1 className='header'>Monsters Under Construction</h1>
     </div>
   )
 };

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import Member from '../components/member';
 import { db } from '../lib/firebase_setup/config';
-import { writeBatch, doc, collection, addDoc } from 'firebase/firestore'
+import { writeBatch, doc, collection, addDoc, Timestamp } from 'firebase/firestore'
 import { useAuthContext } from '../lib/context/AuthContext';
 
 export default function CreateParty({ router }) {
@@ -28,7 +28,18 @@ export default function CreateParty({ router }) {
       partyName: partyNameRef.current.value,
       playerName: '',
       characterName: '',
-      characterClass: ''
+      characterClass: '',
+      characterRace: '',
+      armorClass: '',
+      hitPoints: '',
+      speed: '',
+      hitDice: '',
+      strength: '',
+      dexterity: '',
+      constitution: '',
+      intelligence: '',
+      wisdom: '',
+      charisma: ''
     }]);
   }
 
@@ -36,11 +47,9 @@ export default function CreateParty({ router }) {
     event.preventDefault();
     console.log('submitting party');
     const memberBatch = writeBatch(db);
-    const currentDate = new Date().toLocaleDateString('en-US');
-
 
     members.forEach((member, index) => {
-      const { playerName, characterName, characterClass } = member;
+      const { playerName, characterName, characterClass, characterRace, armorClass, hitPoints, speed, hitDice, strength, dexterity, constitution, intelligence, wisdom, charisma } = member;
       const dungeonMaster = user.email;
       const campaignName = campaignNameRef.current.value;
       const partyName = partyNameRef.current.value;
@@ -53,11 +62,23 @@ export default function CreateParty({ router }) {
         partyName,
         playerName,
         characterName,
-        characterClass
+        characterClass,
+        characterRace,
+        armorClass,
+        hitPoints,
+        speed,
+        hitDice,
+        strength,
+        dexterity,
+        constitution,
+        intelligence,
+        wisdom,
+        charisma
       });
     });
 
     const partyCollectionRef = collection(db, 'parties');
+    const currentDate = Timestamp.now();
     const partyData = {
       campaignName: campaignNameRef.current.value,
       partyName: partyNameRef.current.value,
@@ -67,7 +88,18 @@ export default function CreateParty({ router }) {
         return {
           playerName: member.playerName,
           characterName: member.characterName,
-          characterClass: member.characterClass
+          characterClass: member.characterClass,
+          characterRace: member.characterRace,
+          armorClass: member.armorClass,
+          hitPoints: member.hitPoints,
+          speed: member.speed,
+          hitDice: member.hitDice,
+          strength: member.strength,
+          dexterity: member.dexterity,
+          constitution: member.constitution,
+          intelligence: member.intelligence,
+          wisdom: member.wisdom,
+          charisma: member.charisma
         }
       })
     }
@@ -86,8 +118,8 @@ export default function CreateParty({ router }) {
   }
 
   return (
-    <>
-      <h1>CREATE A PARTY</h1>
+    <div className='page'>
+      <h1 className='header'>CREATE A PARTY</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor='campaign-name'>Campaign Name</label>
         <input id='campaign-name' ref={campaignNameRef} placeholder='Awakening Grog the Tyrant'></input>
@@ -99,6 +131,6 @@ export default function CreateParty({ router }) {
         <button onClick={handleAddMember} type='button'>Add another member</button>
         <button type='submit'>Create Party</button>
       </form>
-    </>
+    </div>
   )
 }

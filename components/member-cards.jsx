@@ -7,6 +7,7 @@ export default function MemberCards({ member }) {
     <div className='member-card'>
       <p>{member.playerName}</p>
       <p>{member.characterName}</p>
+      <p>Level 1</p>
       <p>{capitalize(member.characterClass)}</p>
     </div>
   )

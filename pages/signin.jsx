@@ -30,18 +30,21 @@ export default function Signin({ router }) {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">
-          Email
+    <div className="page">
+      <h1 className='header'>Sign In</h1>
+      <form onSubmit={handleSubmit} className='form-container'>
+        <div className='input-group'>
+          <label htmlFor="email">Email</label>
           <input type='email' ref={emailRef} required></input>
-        </label>
-        <label htmlFor="password">Password</label>
-        <input type='password' ref={passwordRef} required></input>
+        </div>
+        <div className='input-group'>
+          <label htmlFor="password">Password</label>
+          <input type='password' ref={passwordRef} required></input>
+        </div>
         <button type="submit">Sign In</button>
         <p>Don't have an account already?</p>
         <button onClick={handleChange}>Create a New Account</button>
       </form>
-    </>
+    </div>
   )
 };

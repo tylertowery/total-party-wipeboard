@@ -13,6 +13,7 @@ export default function Member({ member, index, onInputChange }) {
         value={member.playerName}
         onChange={(event) => onInputChange(event, index)}
         placeholder='Jack Johnson'
+        required
       />
       <label htmlFor={`character-name-${index}`}>Character Name</label>
       <input
@@ -21,13 +22,15 @@ export default function Member({ member, index, onInputChange }) {
         value={member.characterName}
         onChange={(event) => onInputChange(event, index)}
         placeholder='Grog the Man'
+        required
       />
       <label htmlFor={`character-class-${index}`}>Character Class</label>
       <select
-        name='characterClass'
         id={`character-class-${index}`}
+        name='characterClass'
         value={member.characterClass}
         onChange={(event) => onInputChange(event, index)}
+        required
       >
         <option value=''>--Select--</option>
         <option value='alchemist'>Alchemist</option>
@@ -53,6 +56,143 @@ export default function Member({ member, index, onInputChange }) {
         <option value='witch'>Witch</option>
         <option value='wizard'>Wizard</option>
       </select>
+      <label htmlFor={`character-race-${index}`}>Character Race</label>
+      <select
+        id={`character-race-${index}`}
+        name='characterRace'
+        value={member.characterRace}
+        onChange={(event) => onInputChange(event, index)}
+        required
+      >
+        <option value=''>--Select--</option>
+        <option value='dragonborn'>Dragonborn</option>
+        <option value='dwarf'>Dwarf</option>
+        <option value='elf'>Elf</option>
+        <option value='gnome'>Gnome</option>
+        <option value='half-elf'>Half-Elf</option>
+        <option value='halfling'>Halfling</option>
+        <option value='half-orc'>Half-Orc</option>
+        <option value='human'>Human</option>
+        <option value='tiefling'>Tiefling</option>
+      </select>
+      <label htmlFor={`armor-class-${index}`}>Armor Class</label>
+      <input
+        id={`armor-class-${index}`}
+        name='armorClass'
+        type='number'
+        min='0'
+        max='20'
+        value={member.armorClass}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='0'
+        required
+      />
+      <label htmlFor={`hit-points-${index}`}>Hit Points</label>
+      <input
+        id={`hit-points-${index}`}
+        name='hitPoints'
+        type='number'
+        min='5'
+        max='20'
+        value={member.hitPoints}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor={`speed-${index}`}>Speed</label>
+      <input
+        id={`speed-${index}`}
+        name='speed'
+        type='number'
+        min='20'
+        max='60'
+        step='5'
+        value={member.speed}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='20'
+        required
+      />
+      <label htmlFor={`hit-dice-${index}`}>Hit Dice</label>
+      <input
+        id={`hit-dice-${index}`}
+        name='hitDice'
+        value={member.hitDice}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='5d6'
+        required
+      />
+      <label htmlFor={`strength-${index}`}>Strength</label>
+      <input
+        id={`strength-${index}`}
+        name='strength'
+        type='number'
+        min='0'
+        max='20'
+        value={member.strength}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor={`dexterity-${index}`}>Dexterity</label>
+      <input
+        id={`dexterity-${index}`}
+        name='dexterity'
+        type='number'
+        min='0'
+        max='20'
+        value={member.dexterity}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor={`constitution-${index}`}>Constitution</label>
+      <input
+        id={`constitution-${index}`}
+        name='constitution'
+        type='number'
+        min='0'
+        max='20'
+        value={member.constitution}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor={`intelligence-${index}`}>Intelligence</label>
+      <input
+        id={`intelligence-${index}`}
+        name='intelligence'
+        type='number'
+        min='0'
+        max='20'
+        value={member.intelligence}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor={`wisdom-${index}`}>Wisdom</label>
+      <input
+        id={`wisdom-${index}`}
+        name='wisdom'
+        type='number'
+        min='0'
+        max='20'
+        value={member.wisdom}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor={`charisma-${index}`}>Charisma</label>
+      <input
+        id={`charisma-${index}`}
+        name='charisma'
+        type='number'
+        min='0'
+        max='20'
+        value={member.charisma}
+        onChange={(event) => onInputChange(event, index)}
+        placeholder='10'
+        required
+      />
     </>
   )
 }

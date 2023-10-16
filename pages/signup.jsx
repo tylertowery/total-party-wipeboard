@@ -42,19 +42,25 @@ export default function Signup({ router }) {
   }
 
   return (
-    <>
-      <h1>Create An Account</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type='email' ref={emailRef} required></input>
-        <label htmlFor="password">Password</label>
-        <input type='password' ref={passwordRef} required></input>
-        <label htmlFor='displayName'>Display Name</label>
-        <input ref={displayNameRef} required></input>
+    <div className='page'>
+      <h1 className='header'>Create An Account</h1>
+      <form onSubmit={handleSubmit} className='form-container'>
+        <div className='input-group'>
+          <label htmlFor="email">Email</label>
+          <input type='email' ref={emailRef} required></input>
+        </div>
+        <div className='input-group'>
+          <label htmlFor="password">Password</label>
+          <input type='password' ref={passwordRef} required></input>
+        </div>
+        <div className='input-group'>
+          <label htmlFor='displayName'>Display Name</label>
+          <input ref={displayNameRef} required></input>
+        </div>
         <button type="submit">Sign Up</button>
         <p>Already have an account?</p>
         <button onClick={handleChange}>Sign In</button>
       </form>
-    </>
+    </div>
   )
 };

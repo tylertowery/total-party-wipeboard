@@ -1,0 +1,303 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import firebase from 'firebase/compat/app';
+import 'firebase/firestore';
+import { FieldValue } from 'firebase/compat/firestore';
+import { auth, db } from '../lib/firebase_setup/config';
+import { collection, query, where, getDocs, updateDoc, arrayUnion } from 'firebase/firestore';
+import { setAddingMember, setPartyData } from '../store/store';
+import { useAuthContext } from '../lib/context/AuthContext';
+
+export default function AddMemberForm({ party }) {
+  const [member, setMember] = useState({
+    playerName: '',
+    characterName: '',
+    characterClass: '',
+    characterRace: '',
+    armorClass: '',
+    hitPoints: '',
+    speed: '',
+    hitDice: '',
+    strength: '',
+    dexterity: '',
+    constitution: '',
+    intelligence: '',
+    wisdom: '',
+    charisma: ''
+  });
+
+  const { user } = useAuthContext();
+  const members = useSelector(state => state.partyData);
+  const dispatch = useDispatch();
+
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setMember((prevMember) => ({
+      ...prevMember,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Create a new member object
+    const newMember = {
+      playerName: member.playerName,
+      characterName: member.characterName,
+      characterRace: member.characterRace,
+      characterClass: member.characterClass,
+      characterRace: member.characterRace,
+      armorClass: member.armorClass,
+      hitPoints: member.hitPoints,
+      speed: member.speed,
+      hitDice: member.hitDice,
+      strength: member.strength,
+      dexterity: member.dexterity,
+      constitution: member.constitution,
+      intelligence: member.intelligence,
+      wisdom: member.wisdom,
+      charisma: member.charisma
+    }
+    const fetchParty = async (userEmail, campaign) => {
+      const partiesRef = collection(db, 'parties');
+      const partiesQuery = query(partiesRef, where('dungeonMaster', '==', userEmail), where('campaignName', '==', campaign));
+
+      try {
+        const querySnapshot = await getDocs(partiesQuery);
+
+        if (!querySnapshot.empty) {
+          const partyDoc = querySnapshot.docs[0];
+          updateDoc(partyDoc.ref, {
+            members: firebase.firestore.FieldValue.arrayUnion(newMember)
+          })
+            .then(() => {
+              const updatedMembers = [...members, newMember];
+              dispatch(setPartyData(updatedMembers));
+
+              setMember({
+                playerName: '',
+                characterName: '',
+                characterClass: '',
+                characterRace: '',
+                armorClass: '',
+                hitPoints: '',
+                speed: '',
+                hitDice: '',
+                strength: '',
+                dexterity: '',
+                constitution: '',
+                intelligence: '',
+                wisdom: '',
+                charisma: ''
+              });
+
+              dispatch(setAddingMember(false));
+            })
+            .catch((error) => {
+              console.log('Error adding member to party: ', error.message);
+            });
+        } else {
+          console.log('no party man: ', user.email, party.campaignName);
+        }
+      } catch (error) {
+        console.log('Error fetching party: ', error);
+      }
+    };
+
+    fetchParty(user.email, party.campaignName);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor='player-name'>Player Name: </label>
+      <input
+        id='player-name'
+        name='playerName'
+        value={member.playerName}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='Tanner'
+        required
+      />
+      <label htmlFor='character-name'>Character Name: </label>
+      <input
+        id='character-name'
+        name='characterName'
+        value={member.characterName}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='Pip'
+        required
+      />
+      <label htmlFor='character-class'>Character Class: </label>
+      <select
+        id='character-class'
+        name='characterClass'
+        value={member.characterClass}
+        onChange={(event) => handleInputChange(event)}
+        required
+      >
+        <option value=''>--Select--</option>
+        <option value='alchemist'>Alchemist</option>
+        <option value='barbarian'>Barbarian</option>
+        <option value='bard'>Bard</option>
+        <option value='champion'>Champion</option>
+        <option value='cleric'>Cleric</option>
+        <option value='druid'>Druid</option>
+        <option value='fighter'>Fighter</option>
+        <option value='gunslinger'>Gunslinger</option>
+        <option value='inventor'>Inventor</option>
+        <option value='investigator'>Investigator</option>
+        <option value='magus'>Magus</option>
+        <option value='monk'>Monk</option>
+        <option value='oracle'>Oracle</option>
+        <option value='psychic'>Psychic</option>
+        <option value='ranger'>Ranger</option>
+        <option value='rogue'>Rogue</option>
+        <option value='sorcerer'>Sorcerer</option>
+        <option value='summoner'>Summoner</option>
+        <option value='swashbuckler'>Swashbuckler</option>
+        <option value='thaumaturge'>Thaumaturge</option>
+        <option value='witch'>Witch</option>
+        <option value='wizard'>Wizard</option>
+      </select>
+      <label htmlFor='character-race'>Character Race: </label>
+      <select
+        id='character-race'
+        name='characterRace'
+        value={member.characterRace}
+        onChange={(event) => handleInputChange(event)}
+        required
+      >
+        <option value=''>--Select--</option>
+        <option value='dragonborn'>Dragonborn</option>
+        <option value='dwarf'>Dwarf</option>
+        <option value='elf'>Elf</option>
+        <option value='gnome'>Gnome</option>
+        <option value='half-elf'>Half-Elf</option>
+        <option value='halfling'>Halfling</option>
+        <option value='half-orc'>Half-Orc</option>
+        <option value='human'>Human</option>
+        <option value='tiefling'>Tiefling</option>
+      </select>
+      <label htmlFor='armor-class'>Armor Class: </label>
+      <input
+        id='armor-class'
+        name='armorClass'
+        type='number'
+        min='0'
+        max='20'
+        value={member.armorClass}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='0'
+        required
+      />
+      <label htmlFor='hit-points'>Hit Points: </label>
+      <input
+        id='hit-points'
+        name='hitPoints'
+        type='number'
+        min='5'
+        max='20'
+        value={member.hitPoints}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor='speed'>Speed : </label>
+      <input
+        id='speed'
+        name='speed'
+        type='number'
+        min='20'
+        max='60'
+        step='5'
+        value={member.speed}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='30'
+        required
+      />
+      <label htmlFor='hit-dice'>Hit Dice: </label>
+      <input
+        id='hit-dice'
+        name='hitDice'
+        value={member.hitDice}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='5d6'
+        required
+      />
+      <label htmlFor='strength'>Strength: </label>
+      <input
+        id='strength'
+        name='strength'
+        type='number'
+        min='0'
+        max='20'
+        value={member.strength}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor='dexterity'>Dexterity: </label>
+      <input
+        id='dexterity'
+        name='dexterity'
+        type='number'
+        min='0'
+        max='20'
+        value={member.dexterity}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor='constitution'>Constitution: </label>
+      <input
+        id='constitution'
+        name='constitution'
+        type='number'
+        min='0'
+        max='20'
+        value={member.constitution}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor='intelligence'>Intelligence: </label>
+      <input
+        id='intelligence'
+        name='intelligence'
+        type='number'
+        min='0'
+        max='20'
+        value={member.intelligence}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor='wisdom'>Wisdom: </label>
+      <input
+        id='wisdom'
+        name='wisdom'
+        type='number'
+        min='0'
+        max='20'
+        value={member.wisdom}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='10'
+        required
+      />
+      <label htmlFor='charisma'>Charisma: </label>
+      <input
+        id='charisma'
+        name='charisma'
+        type='number'
+        min='0'
+        max='20'
+        value={member.charisma}
+        onChange={(event) => handleInputChange(event)}
+        placeholder='10'
+        required
+      />
+      <button type='submit'>Add Member</button>
+    </form>
+  )
+}
