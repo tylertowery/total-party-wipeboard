@@ -32,10 +32,9 @@ export default function MemberCarousel({ members }) {
 
   return (
     <Slider {...settings}>
-      {/* Render MemberCard components inside the carousel */}
       {members && members.map((member) => (
-        <div key={member.id}>
-          <MemberCards member={member} />
+        <div>
+          <MemberCards key={member.playerName} member={member} />
         </div>
       ))}
     </Slider>

@@ -4,7 +4,7 @@ import NavBar from '../components/global/NavBar';
 import Footer from '../components/global/Footer';
 import { useRouter } from 'next/router';
 import { AuthContextProvider } from '../lib/context/AuthContext';
-import { store } from '../store/store'
+import { wrapper } from '../store/store';
 import { Provider } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -14,8 +14,10 @@ const inter = Inter({
   subsets: ['latin']
 });
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, ...rest }) {
   const router = useRouter();
+
+  const { store, props } = wrapper.useWrappedStore(rest);
 
   return (
     <Provider store={store}>
@@ -23,7 +25,7 @@ export default function App({ Component, pageProps }) {
         <main className={inter.className}>
           <NavBar router={router} />
           <div className='spacer-top' />
-          <Component {...pageProps} router={router} />
+          <Component {...props.pageProps} router={router} />
           <div className='spacer-bottom' />
           <Footer router={router} />
         </main>

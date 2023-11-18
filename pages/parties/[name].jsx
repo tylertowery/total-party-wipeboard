@@ -1,20 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { setAddingMember } from '../../store/store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import BigMemberCards from '../../components/big-member-cards';
 import AddMemberForm from '../../components/add-member-form';
 
 export default function PartyName({ router }) {
   //Redux State Store
   const parties = useSelector(state => state.partyData);
-  const index = useSelector(state => state.currentIndex);
+  const index = useSelector(state => state.currentPartyIndex);
   const addingMember = useSelector(state => state.addingMember);
 
   const dispatch = useDispatch();
-
-  const handleLog = () => {
-    console.log('parties: ', parties[index]);
-  }
 
   const handleClose = (event) => {
     event.preventDefault();
@@ -28,26 +26,37 @@ export default function PartyName({ router }) {
 
   const party = parties[index];
 
+  const handleLog = () => {
+    console.log(party);
+  }
+
+
   return (
-    <div>
+    <div className='page'>
       {addingMember && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="modal-overlay" onClick={handleClose}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <FontAwesomeIcon
+              className='icon close'
+              size='xl'
+              icon={faCircleXmark}
+              onClick={handleClose}
+            />
             {/* Render your AddMemberForm component here */}
-            <AddMemberForm party={party} handleClose={handleClose} />
-            <button onClick={handleClose}>Close</button>
+            <AddMemberForm party={party} />
           </div>
         </div>
       )}
-      <h1 className='header' onClick={handleLog}>{party?.campaignName} - {party?.partyName}</h1>
+      <h1 className='header'>{party?.campaignName} - {party?.partyName}</h1>
       <div className='big-members'>
-        {party.members.map((member) => {
-          return <BigMemberCards key={party?.partyName} member={member} />
+        {parties[index]?.members?.map((member) => {
+          return <BigMemberCards key={member?.characterName} parties={parties} index={index} party={parties[index]} member={member} />
         })}
       </div>
       <div className='centered'>
-        <button onClick={handleAddMember} className='add-member'>Create New Party Member</button>
+        <button onClick={handleAddMember} className='create-new-member'>Create New Party Member</button>
       </div>
+      <button onClick={handleLog}>Log</button>
     </div >
   )
 }

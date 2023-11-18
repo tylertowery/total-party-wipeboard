@@ -2,9 +2,13 @@ import { useState, useRef } from 'react';
 import Member from '../components/member';
 import { db } from '../lib/firebase_setup/config';
 import { writeBatch, doc, collection, addDoc, Timestamp } from 'firebase/firestore'
+import { useDispatch, useSelector } from 'react-redux';
+import { setPartyData } from '../store/store.js'
 import { useAuthContext } from '../lib/context/AuthContext';
 
 export default function CreateParty({ router }) {
+  const dispatch = useDispatch();
+  const parties = useSelector(state => state.partyData);
   const [members, setMembers] = useState([]);
   const campaignNameRef = useRef();
   const partyNameRef = useRef();
@@ -108,6 +112,9 @@ export default function CreateParty({ router }) {
       await addDoc(partyCollectionRef, partyData);
       await memberBatch.commit();
       console.log('Form saved to Firebase');
+      let updatedParty = parties;
+      updatedParty.unshift(partyData);
+      dispatch(setPartyData(updatedParty))
       setMembers([]);
       campaignNameRef.current.value = '';
       partyNameRef.current.value = '';
@@ -120,16 +127,27 @@ export default function CreateParty({ router }) {
   return (
     <div className='page'>
       <h1 className='header'>CREATE A PARTY</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='campaign-name'>Campaign Name</label>
-        <input id='campaign-name' ref={campaignNameRef} placeholder='Awakening Grog the Tyrant'></input>
-        <label htmlFor='party-name'>Party Name</label>
-        <input id='party-name' ref={partyNameRef} placeholder='The Goonies'></input>
+      <form onSubmit={handleSubmit} className='create-form'>
+        <div className='input-group campaign-group'>
+          <label htmlFor='campaign-name'>Campaign Name</label>
+          <input id='campaign-name' ref={campaignNameRef} placeholder='Awakening Grog the Tyrant'></input>
+        </div>
+        <div className='input-group'>
+          <label htmlFor='party-name'>Party Name</label>
+          <input id='party-name' ref={partyNameRef} placeholder='The Goonies'></input>
+        </div>
         {members.map((member, index) => {
           return <Member key={index} index={index} member={member} onInputChange={handleInputChange} />
         })}
-        <button onClick={handleAddMember} type='button'>Add another member</button>
-        <button type='submit'>Create Party</button>
+        <div className='create-buttons'>
+          {members.length > 0
+            ?
+            <button onClick={handleAddMember} type='button'>Add Another Member</button>
+            :
+            <button onClick={handleAddMember} type='button'>Add Member</button>
+          }
+          <button type='submit'>Create Party</button>
+        </div>
       </form>
     </div>
   )
