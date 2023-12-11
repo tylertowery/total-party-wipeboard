@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/Image';
+import Image from 'next/image';
 import { useState, useRef } from 'react';
 import { useAuthContext } from '../../lib/context/AuthContext';
 import { signOut } from 'firebase/auth';
