@@ -27,7 +27,7 @@ export default function AddMemberForm({ party }) {
 
   const { user } = useAuthContext();
   const parties = useSelector(state => state.partyData);
-  const index = useSelector(state => state.currentIndex);
+  const index = useSelector(state => state.currentPartyIndex);
   const dispatch = useDispatch();
 
 
@@ -105,7 +105,8 @@ export default function AddMemberForm({ party }) {
       const updatedMembers = [...currentPartyData.members, newMember];
       // need to set the party data by changing just the current party's member array
       let updatedParty = [...parties];
-      console.log('before change: ', parties)
+      console.log('before change: ', index);
+      console.log('variable: ', updatedMembers);
       updatedParty[index].members = updatedMembers;
       console.log('after change: ', updatedParty);
       dispatch(setPartyData(updatedParty));
