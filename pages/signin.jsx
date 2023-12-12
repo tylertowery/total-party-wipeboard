@@ -85,6 +85,7 @@ export default function Signin({ router }) {
         <p>Don't have an account already?</p>
         <button onClick={handleChange}>Create a New Account</button>
       </form>
+      <button onClick={() => console.log(process.env.NEXT_PUBLIC_projectId)}>Click</button>
     </div>
   )
 };
