@@ -426,6 +426,10 @@ select {
   border-radius: 3px;
 }
 
+.question {
+  text-align: center;
+}
+
 /********** Create Party **********/
 
 .create-form,

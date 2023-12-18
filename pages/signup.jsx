@@ -58,7 +58,7 @@ export default function Signup({ router }) {
           <input ref={displayNameRef} required></input>
         </div>
         <button type="submit">Sign Up</button>
-        <p>Already have an account?</p>
+        <p className='question'>Already have an account?</p>
         <button onClick={handleChange}>Sign In</button>
       </form>
     </div>

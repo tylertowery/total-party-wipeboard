@@ -82,7 +82,7 @@ export default function Signin({ router }) {
           <input type='password' ref={passwordRef} required></input>
         </div>
         <button type="submit">Sign In</button>
-        <p>Don't have an account already?</p>
+        <p className='question'>Don't have an account already?</p>
         <button onClick={handleChange}>Create a New Account</button>
       </form>
     </div>
