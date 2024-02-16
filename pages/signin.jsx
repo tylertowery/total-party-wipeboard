@@ -15,7 +15,7 @@ export default function Signin({ router }) {
 
   const handleSignIn = async () => {
     event.preventDefault();
-    console.log('signing in');
+    console.log('updated signing in');
     console.log(auth);
 
     try {
